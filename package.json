@@ -12,6 +12,7 @@
     },
     "main": "./server",
     "dependencies": {
+        "handlebars": "~2.0.0",
         "hapi": "~7.0.0",
         "yamljs": "~0.2.0"
     },
