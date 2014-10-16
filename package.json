@@ -1,7 +1,7 @@
 {
     "name": "monconfig",
     "version": "0.0.0",
-    "description: "MongoDB configuration generator",
+    "description": "MongoDB configuration generator",
     "author": "Jacob Morton <mkoopajr@gmail.com>",
     "engines": {
         "node": ">=0.10.30"

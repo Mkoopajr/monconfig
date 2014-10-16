@@ -2,6 +2,10 @@
 
 MongoDB configuration file generator
 
+## Site
+
+http://monconfig.herokuapp.com/
+
 ## Notes
 
 More of a proof of concept. Therefore there is really no bounds checking, input validation,
