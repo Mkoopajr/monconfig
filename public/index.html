@@ -6,7 +6,8 @@
         <h1>MongoDB configuration generator</h1>
         <p>More of a proof of concept. Therefore there is really no bounds checking, input
         validation, or testing. If people like the idea or it's helpful to others and myself 
-        I'll update it.</p>
+        I'll update it. More info on MongoDB configuration can be found <a href=http://docs.mongodb.org/manual/reference/configuration-options/>http://docs.mongodb.org/manual/reference/configuration-options/</a>.
+        Code can be found at <a href=https://github.com/Mkoopajr/monconfig>https://github.com/Mkoopajr/monconfig</a></p>
 
         <form name="config" method="post" action="/generate">
             <p>Filename: <input type="text" name="filename" placeholder="mongo" required autofocus>
@@ -164,7 +165,7 @@
             <p>Display Name: <input type="text" name="windowsDisplayName"></p>
             <p>Description: <input type="text" name="windowsServiceDescription"></p>
             <p>Service User: <input type="text" name="windowsServiceUser"></p>
-            <p>Service Password: <input type="password" name="windowsServicePwd"</p>
+            <p>Service Password: <input type="password" name="windowsServicePwd"></p>
 
             <p><input type="submit" value="Generate"></p>
         </form>
