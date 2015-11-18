@@ -1,254 +1,173 @@
-<!DOCTYPE html>
-
+<!doctype html>
 <html>
+    <head>
+    </head>
+    <body>
+        <h1>MongoDB configuration generator</h1>
+        <p>More of a proof of concept. Therefore there is really no bounds checking, input
+        validation, or testing. If people like the idea or it's helpful to others and myself 
+        I'll update it. More info on MongoDB configuration can be found <a href=http://docs.mongodb.org/manual/reference/configuration-options/>http://docs.mongodb.org/manual/reference/configuration-options/</a>.
+        Code can be found at <a href=https://github.com/Mkoopajr/monconfig>https://github.com/Mkoopajr/monconfig</a></p>
 
-	<head>
-	 <meta name="generator" content="Jacob Morton">
-		 <!--Facebook-->
-		 <meta property="og:url" content="" />
-		 <meta property="og:title" content="MongoDB Configurator" />
-	 	 <meta property="og:description" content="MongoDB Configuration Generator" />
-	  	 <meta property="og:image" content="" />
-		 <meta property="og:type" content="website" />
-     <title>MongoDB Configuration Generator</title>
-	 <style>
-	 
-	 	body,html {
-	 	
-	 		background-color:#6969E1;
-	 		font-family:Liberation Serif;
-	 		font-size:16px;
-	 			 	
-	 	}
-	 	
-	 	a,a:link,a:visited,a:active {
-	 	
-	 		color:#111;
-	 		text-decoration:underline;
-	 		font-weight:bold;
-	 	
-	 	}
-	 	
-	 	a:hover {
-	 	
-	 		text-decoration:none;
-	 	
-	 	}
-	 	
-	 	input,select,textarea {
-	 	
-	 		font-size:1em;
-	 		background-color:#FFF;
-	 		color:#000;
-	 		border:1px solid #111;
-	 	
-	 	}
-	 
-	 </style>
-	 <script>
-	 
-	 	var readDate = new Date();
-		var date = readDate.getUTCFullYear(); 
+        <form name="config" method="post" action="/generate">
+            <p>Filename: <input type="text" name="filename" placeholder="mongo" required autofocus>
+            conf: <input type="radio" name="ext" value="conf" checked>
+            cfg: <input type="radio" name="ext" value="cfg"></p>
 
-	</script>
-	</head>
+            <h2>Core Options:</h2>
+            <h3>System Log:</h3>
+                <p>Verbosity: <input type="number" name="sysLogVerbosity" min="0" max="5"></p>
+                <p>Quiet: <input type="checkbox" name="sysLogQuiet" value="true"></p>
+                <p>Trace All Exceptions: <input type="checkbox" name="sysLogTraceAllExceptions" value="true"></p>
+                <p>Facility: <input type="text" name="sysLogFacility"></p>
+                <p>Path: <input type="text" name="sysLogPath" placeholder="/path/to/log"></p>
+                <p>Append: <input type="checkbox" name="sysLogAppend" value="true"></p>
+                <p>Destination: file: <input type="radio" name="sysLogDestination" value="file">
+                syslog: <input type="radio" name="sysLogDestination" value="syslog"></p>
+                <p>Timestamp:
+                    <select name="sysLogTimestamp">
+                        <option value="iso8601-local">iso8601-local</option>
+                        <option value="iso8601-utc">iso8601-utc</option>
+                        <option value="ctime">ctime</option>
+                    </select>
+                </p>
 
-	<body>
+            <h3>Process Management:</h3>
+                <p>PID File Path: <input type="text" name="pidFilePath"></p>
+                <p>Fork: <input type="checkbox" name="processManFork" value="true"></p>
 
-	<div align="center"><div style="width:80%;">
+            <h3>Net:</h3>
+                <p>Port: <input type="number" name="port"></p>
+                <p>Bind IP: <input type="text" name="bindIp" placeholder="127.0.0.1" required></p>
+                <p>Max Incoming Connections: <input type="number" name="maxConnections"></p>
+                <p>Wire Object Check: <input type="checkbox" name="wireObjectCheck" value="true"></p>
+                <p>HTTP: <input type="checkbox" name="http" value="true"></p>
+                <p>Unix Domain Socket: <input type="checkbox" name="enabledUDS" value="true"></p>
+                <p>Unix Domain Socket Path: <input type="text" name="pathUDS"></p>
+                <p>IPv6: <input type="checkbox" name="ipv6" value="true"></p>
+                <p>JSONP: <input type="checkbox" name="jsonp" value="true"></p>
+                <p>REST Interface: <input type="checkbox" name="rest" value="true"></p>
+                <p>SSL On Normal Ports: <input type="checkbox" name="sslOnPorts" value="true"></p>
+                <p>SSL Mode:
+                    <select name="sslMode">
+                        <option value="disabled">disabled</option>
+                        <option value="allowSSL">allowSSL</option>
+                        <option value="preferSSL">preferSSL</option>
+                        <option value="requireSSL">requireSSL</option>
+                    </select>
+                </p>
+                <p>PEMKey File: <input type="text" name="sslPemKey" placeholder="/path/to/PEMFile"></p>
+                <p>PEMKey Password: <input type="password" name="sslPemKeyPwd"></p>
+                <p>Cluster File: <input type="text" name="sslClusterFile"></p>
+                <p>Cluster Password: <input type="password" name="sslClusterPwd"></p>
+                <p>CA File: <input type="text" name="sslCaFile"></p>
+                <p>CRL File: <input type="text name="sslCrlFile"></p>
+                <p>Weak Certificate Validation: <input type="checkbox" name="sslWeakCa" value="true"></p>
+                <p>Allow Invalid Certificate: <input type="checkbox" name="sslInvalidCa" value="true"></p>
+                <p>FIPS Mode: <input type="checkbox" name="sslFipsMode" value="true"></p>
+                <p>Set Parameter:</p>
 
-	<h1>MongoDB configuration generator</h1>
-	<div align="left">
-	 <p>More of a proof of concept. Therefore there is really no bounds checking, input validation, or testing. If people like the idea or it's helpful to others and myself I'll update it. More info on MongoDB configuration can be found <a href="http://docs.mongodb.org/manual/reference/configuration-options/">http://docs.mongodb.org/manual/reference/configuration-options/</a>.<br />
-	 Code can be found at <a href="https://github.com/Mkoopajr/monconfig">https://github.com/Mkoopajr/monconfig</a></p>
-	</div>
-	<br />
-	<div style="width:70%;"><div align="left">
-	
-	<form name="config" method="post" action="/generate">
-		<p>Filename: <input type="text" name="filename"> conf: <input type="radio" name="ext" value="conf" checked> cfg: <input type="radio" name="ext" value="cfg"></p>
-		<h2>Core Options:</h2>
-		<h3>System Log:</h3>
+            <h3>Security:</h3>
+            <p>Key File: <input type="text" name="keyFile"></p>
+            <p>Cluster Authorization Mode:
+                <select name="clusterAuthMode">
+                    <option value="keyFile">keyFile</option>
+                    <option value="sendKeyFile">sendKeyFile</option>
+                    <option value="sendX509">sendX509</option>
+                    <option value="x509">x509</option>
+                </select>
+            </p>
+            <p>Authorization:
+                <select name="auth">
+                    <option value="disabled">disabled</option>
+                    <option value="enabled">enabled</option>
+                </select>
+            </p>
+            <p>SASL Host Name: <input type="text" name="saslHostName"></p>
+            <p>SASL Service Name: <input type="text" name="saslServiceName"></p>
+            <p>SASL Authd Socket Path: <input type="text" name="saslAuthdSocketPath"></p>
+            <p>Enable Javascript: <input type="checkbox" name="javascriptEnabled" value="true"></p>
 
-			<p>Verbosity: <input type="number" name="sysLogVerbosity"></p>
-			<p>Quiet: <input type="checkbox" name="sysLogQuiet" value="true"></p>
-			<p>Trace All Exceptions: <input type="checkbox" name="sysLogTraceAllExceptions" value="true"></p>
-			<p>Facility: <input type="text" name="sysLogFacility"></p>
-			<p>Path: <input type="text" name="sysLogPath"></p>
-			<p>Append: <input type="checkbox" name="sysLogAppend" value="true"></p>
-			<p>Destination: file: <input type="radio" name="sysLogDestination" value="file"> syslog: <input type="radio" name="sysLogDestination" value="syslog"></p>
-			<p>Timestamp: 
-			 <select name="sysLogTimestamp">
-			  <option value="iso8601-local">iso8601-local</option>
-			  <option value="iso8601-utc">iso8601-utc</option>
-			  <option value="ctime">ctime</option>
-			 </select>
-			</p>
-			
-		<h3>Process Management:</h3>
+            <h3>Operation Profiling:</h3>
+            <p>Slow Op Threshold Milliseconds: <input type="number" name="slowOpThresholdMs"></p>
+            <p>Mode:
+                <select name="opProfilingMode">
+                    <option value="off">off</option>
+                    <option value="slowOp">slowOp</option>
+                    <option value="all">all</options>
+                </select>
+            </p>
 
-			<p>PID File Path: <input type="text" name="pidFilePath"></p>
-			<p>Fork: <input type="checkbox" name="processManFork" value="true"></p>
+            <h3>Storage</h3>
+            <p>DB Path: <input type="text" name="dbPath" required></p>
+            <p>Directory Per DB: <input type="checkbox" name="directoryPerDb" value="true"></p>
+            <p>Index Build Retry: <input type="checkbox" name="indexBuildRetry" value="true"></p>
+            <p>Pre Allocate Data Files: <input type="checkbox" name="preAllocDataFiles" value="true"></p>
+            <p>Name Space Size: <input type="number" name="nsSize"></p>
+            <p>Quota Enforced: <input type="checkbox" name="quotaEnforced" value="true"></p>
+            <p>Max Files Per DB: <input type="number" name="maxFilesPerDb"></p>
+            <p>Small Files: <input type="checkbox" name="smallFiles" value="true"></p>
+            <p>Sync Period Secs: <input type="number" name="syncPeriodSecs"></p>
+            <p>Repair Path: <input type="text" name="repairPath"></p>
+            <p>Journal: <input type="checkbox" name="journalEnabled" value="true"></p>
+            <p>Debug Flags: <input type="number" name="debugFlags"></p>
+            <p>Commit Interval Milliseconds: <input type="number" name="commitIntervalMs"></p>
 
-		<h3>Net:</h3>
-		
-			<p>Port: <input type="number" name="port"></p>
-			<p>Bind IP: <input type="text" name="bindIp"></p>
-			<p>Max Incoming Connections: <input type="number" name="maxConnections"></p>
-			<p>Wire Object Check: <input type="checkbox" name="wireObjectCheck" value="true"></p>
-			<p>HTTP: <input type="checkbox" name="http" value="true"></p>
-			<p>Unix Domain Socket: <input type="checkbox" name="enabledUDS" value="true"></p>
-			<p>Unix Domain Socket Path: <input type="text" name="pathUDS"></p>
-			<p>IPv6: <input type="checkbox" name="ipv6" value="true"></p>
-			<p>JSONP: <input type="checkbox" name="jsonp" value="true"></p>
-			<p>REST Interface: <input type="checkbox" name="rest" value="true"></p>
-			<p>SSL On Normal Ports: <input type="checkbox" name="sslOnPorts" value="true"></p>
-			<p>
-			SSL Mode:
-			 <select name="sslMode">
-			  <option value="disabled">disabled</option>
-			  <option value="allowSSL">allowSSL</option>
-			  <option value="preferSSL">preferSSL</option>
-			  <option value="requireSSL">requireSSL</option>
-			 </select>
-			</p>
-			<p>PEMKey File: <input type="text" name="sslPemKey"></p>
-			<p>PEMKey Password: <input type="password" name="sslPemKeyPwd"></p>
-			<p>Cluster File: <input type="text" name="sslClusterFile"></p>
-			<p>Cluster Password: <input type="password" name="sslClusterPwd"></p>
-			<p>CA File: <input type="text" name="sslCaFile"></p>
-			<p>CRL File: <input type="text" name="sslCrlFile"></p>
-			<p>Weak Certificate Validation: <input type="checkbox" name="sslWeakCa" value="true"></p>
-			<p>Allow Invalid Certificate: <input type="checkbox" name="sslInvalidCa" value="true"></p>
-			<p>FIPS Mode: <input type="checkbox" name="sslFipsMode" value="true"></p>
-			<p>Set Parameter:</p>
-			
-			<h3>Security:</h3>
-			<p>Key File: <input type="text" name="keyFile"></p>
-			<p>
-			Cluster Authorization Mode: 
-			<select name="clusterAuthMode">
-			 <option value="keyFile">keyFile</option>
-			 <option value="sendKeyFile">sendKeyFile</option>
-			 <option value="sendX509">sendX509</option>
-			 <option value="x509">x509</option>
-			</select>
-			</p>
-			<p>
-			
-			Authorization: 
-			 <select name="auth">
-			  <option value="disabled">disabled</option>
-			  <option value="enabled">enabled</option>
-			 </select>
-			
-			</p>
-			<p>SASL Host Name: <input type="text" name="saslHostName"></p>
-			<p>SASL Service Name: <input type="text" name="saslServiceName"></p>
-			<p>SASL Authd Socket Path: <input type="text" name="saslAuthdSocketPath"></p>
-			<p>Enable Javascript: <input type="checkbox" name="javascriptEnabled" value="true"></p>
-			
-			<h3>Operation Profiling:</h3>
+            <h3>Replication:</h3>
+            <p>Op Log Size MB: <input type="number" name="opLogSizeMB"></p>
+            <p>Replication Set Name: <input type="text" name="replSetName"></p>
+            <p>Secondary Index Prefetch:
+                <select name="secondaryIndexPrefetch">
+                    <option value="all">all</option>
+                    <option value="none">none</option>
+                    <option value="_id_only">_id_only</option>
+                </select>
+            </p>
 
-			<p>Slow Op Threshold Milliseconds: <input type="number" name="slowOpThresholdMs"></p>
-			<p>Mode: 
-			 <select name="opProfilingMode">
-			  <option value="off">off</option>
-			  <option value="slowOp">slowOp</option>
-			  <option value="all">all</option>
-			 </select>
-			</p>
-			
-			<h3>Storage</h3>
-			<p>DB Path: 
-			<input type="text" name="dbPath">
-			
-			</p>
-			<p>Directory Per DB: <input type="checkbox" name="directoryPerDb" value="true"></p>
-			<p>Index Build Retry: <input type="checkbox" name="indexBuildRetry" value="true"></p>
-			<p>Pre Allocate Data Files: <input type="checkbox" name="preAllocDataFiles" value="true"></p>
-			<p>Name Space Size: <input type="number" name="nsSize"></p>
-			<p>Quota Enforced: <input type="checkbox" name="quotaEnforced" value="true"></p>
-			<p>Max Files Per DB: <input type="number" name="maxFilesPerDb"></p>
-			<p>Small Files: <input type="checkbox" name="smallFiles" value="true"></p>
-			<p>Sync Period Secs: <input type="number" name="syncPeriodSecs"></p>
-			<p>Repair Path: <input type="text" name="repairPath"></p>
-			<p>Journal: <input type="checkbox" name="journalEnabled" value="true"></p>
-			<p>Debug Flags: <input type="number" name="debugFlags"></p>
-			<p>Commit Interval Milliseconds: <input type="number" name="commitIntervalMs"></p>
-			
-			<h3>Replication:</h3>
-			
-			<p>Op Log Size MB: <input type="number" name="opLogSizeMB"></p>
-			<p>Replication Set Name: <input type="text" name="replSetName"></p>
-			<p>Secondary Index Prefetch: 
-			
-			 <select name="secondaryIndexPrefetch">
-			  <option value="all">all</option>
-			  <option value="none">none</option>
-			  <option value="_id_only">_id_only</option>
-			 </select>
-			
-			</p>
+            <h3>Sharding</h3>
+            <p>Cluster Role: configsvr: <input type="radio" name="clusterRole" value="configsvr">
+                shardsvr: <input type="radio" name="clusterRole" value="shardsvr"></p>
+            <p>Archive Moved Chunks: <input type="number" name="archiveMovedChunks"></p>
 
-			<h3>Sharding</h3>
-		
-				<p>Cluster Role: configsvr: <input type="radio" name="clusterRole" value="configsvr"> shardsvr: <input type="radio" name="clusterRole" value="shardsvr"></p>
-				<p>Archive Moved Chunks: <input type="number" name="archiveMovedChunks"></p>
+            <h3>Audit Log:</h3>
+            <p>Destination:
+                <select name="auditLogDestination">
+                    <option value="console">console</option>
+                    <option value="syslog">syslog</option>
+                    <option file="file">file</option>
+                </select>
+            </p>
+            <p>Format:
+                <select name="auditLogFormat">
+                    <option value="JSON">JSON</option>
+                    <option file="BSON">BSON</option>
+                </select>
+            </p>
+            <p>Path: <input type="text" name="auditLogPath"></p>
+            <p>Filter:</p>
 
-			<h3>Audit Log:</h3>
-			
-			<p>Destination: 
-				<select name="auditLogDestination">
-				 <option value="console">console</option>
-				 <option value="syslog">syslog</option>
-				 <option>file</option>
-				</select>
-			</p>
-			<p>Format: 
-				<select name="auditLogFormat">
-				 <option value="JSON">JSON</option>
-				 <option>BSON</option>
-				</select>
-			</p>
-			<p>Path: <input type="text" name="auditLogPath"></p>
-			<p>Filter:</p>
+            <h3>SNMP</h3>
+            <p> SNMP Subagent: <input type="checkbox" name="snmpSubagent" value="true"></p>
+            <p> SNMP Master: <input type="checkbox" name="snmpMaster" value="true"></p>
 
-			<h3>SNMP</h3>
-				
-				<p>SNMP Subagent: <input type="checkbox" name="snmpSubagent" value="true"></p>
-				<p>SNMP Master: <input type="checkbox" name="snmpMaster" value="true"></p>
+            <h2>Mongos-Only Options:</h2>
+            <h3>Replication:</h3>
+            <p>Local Ping Threshold Milliseconds: <input type="number" name="localPingThresholdMs"></p>
 
-			<h2>Mongos-Only Options:</h2>
-			
-			<h3>Replication:</h3>
+            <h3>Sharding:</h3>
+            <p>Auto Split: <input type="checkbox" name="shardAutoSplit" value="true"></p>
+            <p>Configuartion Database: <input type="string" name="shardConfigDb"></p>
+            <p>Chunk Size: <input type="number" name="shardChunkSize"></p>
 
-				<p>Local Ping Threshold Milliseconds: <input type="number" name="localPingThresholdMs"></p>
+            <h2>Windows Service Options:</h2>
+            <h3>Process Managment:</h3>
+            <p>Service Name: <input type="text" name="windowsServiceName"></p>
+            <p>Display Name: <input type="text" name="windowsDisplayName"></p>
+            <p>Description: <input type="text" name="windowsServiceDescription"></p>
+            <p>Service User: <input type="text" name="windowsServiceUser"></p>
+            <p>Service Password: <input type="password" name="windowsServicePwd"></p>
 
-			<h3>Sharding:</h3>
-		
-				<p>Auto Split: <input type="checkbox" name="shardAutoSplit" value="true"></p>
-				<p>Configuartion Database: <input type="string" name="shardConfigDb"></p>
-				<p>Chunk Size: <input type="number" name="shardChunkSize"></p>
-			
-			<h2>Windows Service Options:</h2>
-
-				<h3>Process Managment:</h3>
-					
-					<p>Service Name: <input type="text" name="windowsServiceName"></p>
-					<p>Display Name: <input type="text" name="windowsDisplayName"></p>
-					<p>Description: <input type="text" name="windowsServiceDescription"></p>
-					<p>Service User: <input type="text" name="windowsServiceUser"></p>
-					<p>Service Password: <input type="password" name="windowsServicePwd"></p>
-					<p><input type="submit" value="Generate"></p>
-			
-		</form>
-		</div></div>
-		</div></div>
-		<script>
-		
-			document.write("<div align=\"center\">Programmed By <a href=\"https://github.com/Mkoopajr\">Mkoopajr</a> &copy; "+ date +". Berkley BSD Liscence.</div>");
-		
-		</script>
-	</body>
+            <p><input type="submit" value="Generate"></p>
+        </form>
+    </body>
 </html>
